@@ -38,9 +38,32 @@ change_permissions() {
     sudo chmod 600 /opt/bitnami/apache2/conf/server*
 }
 
+# Set up auto-renewing SSL certificate
+
+make_renew_script() {
+    sudo touch /etc/lego/renew-certificate.sh
+    sudo echo "#!/bin/bash" >> /etc/lego/renew-certificate.sh
+    sudo echo "" >> /etc/lego/renew-certificate.sh
+    sudo echo "sudo /opt/bitnami/ctlscript.sh stop apache" >> /etc/lego/renew-certificate.sh
+    sudo echo "sudo /usr/local/bin/lego --email=\"${email}\" --domains=\"${domain}\" --domains=\"${domain_two}\" --path=\"/etc/lego\" renew" >> /etc/lego/renew-certificate.sh
+    sudo echo "sudo /opt/bitnami/ctlscript.sh start apache" >> /etc/lego/renew-certificate.sh
+}
+
+make_script_executable() {
+    sudo chmod +x /etc/lego/renew-certificate.sh
+}
+
+display_cmd_to_copy() {
+    echo ""
+    echo "***************************************"
+    echo ""
+    read -p "Copy the following command and paste it into the crontab file that opens:\n\nCOPY THIS: 0 0 1 * * /etc/lego/renew-certificate.sh 2\> /dev/null\n\nPress any key to open crontab file: " anykey
+}
+
 restart_services() {
     sudo /opt/bitnami/ctlscript.sh start
 }
+
 
 get_info
 install_lego
@@ -49,4 +72,7 @@ get_ssl_cert
 rename_default_ssl
 link_ssl_certs
 change_permissions
+make_renew_script
+make_script_executable
+display_cmd_to_copy
 restart_services
