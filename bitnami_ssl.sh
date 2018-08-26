@@ -58,7 +58,9 @@ display_cmd_to_copy() {
     echo "***************************************"
     echo ""
     echo "Copy the following command and paste it into the crontab file that opens:"
-    echo "COPY THIS: 0 0 1 * * /etc/lego/renew-certificate.sh 2\> /dev/null"
+    echo ""
+    echo "COPY THIS: 0 0 1 * * /etc/lego/renew-certificate.sh 2> /dev/null"
+    echo ""
     read -p "Press any key to open crontab file: " anykey
     sudo crontab -e
 }
