@@ -1,7 +1,6 @@
 #!/bin/bash
 
 get_info() {
-    sudo su
     read -p "Enter an email for SSL certificate notifications: " email
     read -p "Enter the domain name for the SSL certificate: " domain
     domain_two="www.${domain}"

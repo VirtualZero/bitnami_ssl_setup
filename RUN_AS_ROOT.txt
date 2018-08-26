@@ -1,0 +1,1 @@
+You must run this script as root for it to execute properly. Use the command "sudo su" to use the root account.
